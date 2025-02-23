@@ -1,0 +1,7 @@
+STDP = 1
+TAU_MINUS = 1
+TAU_PLUS = 2
+neuron_params = {
+    "LEARNING_METHOD": STDP,
+    "LEARNING_PARAMS": {"TAU_MINUS": TAU_MINUS, "TAU_PLUS": TAU_PLUS},
+}
