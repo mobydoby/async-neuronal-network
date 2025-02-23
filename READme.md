@@ -1,17 +1,17 @@
 # Async Neural Architecture Design
 
 ## Outline
-    1. Purpose
-    2. Background
-    3. Requirements
-    4. Design 
-    5. Results
-    6. Deviations
-    7. Future Work
-    8. References
+    1. [Purpose](#purpose)
+    2. [Background](#background)
+    3. [Requirements](#requirements)
+    4. [Design](#design)
+    5. [Results](#results)
+    6. [Deviations](#deviations)
+    7. [Future Work](#future)
+    8. [References](#references)
 
 ## Purpose
-At its core, this project explores how using temporal encoding can represent more information than traditional neural networks, with the intuition that more efficient representations can lead to smarter and more powerful inferences. This project aims to establish a foundational framework for creating asynchronous neural networks that can exploit temporal encoding for more efficient representations and computations.
+This project explores how using temporal encoding can represent more information than traditional neural networks, with the intuition that more efficient representations can lead to smarter and more powerful inferences. This project aims to establish a foundational framework for creating asynchronous neural networks that can exploit temporal encoding for more efficient representations and computations.
 
 ## Background
 A key difference in Artificial Deep Neural Networks (ANN) and Biological Neural Networks (Human and Animal Nervous Systems) is the lack of temporal encoding. Deep neural networks are restricted to process information one forward pass at a time. But biological intelligence networks are free activate asynchronously (for the most part, as we shall see). Research by Anthropic has shown using mechanistic interpretability that Deep Neural Networks act as sparse autoencoders for abstract concepts and meta information. This means that deep neural networks learn representations (compressed encodings) in neuron weight patterns naturally through back-propagation. This is a surprising and powerful discovery. It implies that a system with learnable representations are (nearly) all you need for powerful AI. All current implementations of Deep Neural Networks activate sequentially, layer by layer. This imposes a representation constraint - without workarounds, neuron activations can be used for maximally 1 representation per forward pass. 
