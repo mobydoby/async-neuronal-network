@@ -28,7 +28,7 @@ def network_linear():
         net1_config["output_list"],
         period_start_time=1000,
         clock_cycle_period=period,
-        name="clocked_network",
+        name="clocked_network_linear",
     )
 
 
