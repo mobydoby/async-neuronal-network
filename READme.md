@@ -2,7 +2,63 @@
 
 ## Quickstart
 This project is still in development. Currently this project support initializing networks of neurons and retreiving their outputs through code.  
-Initialize a network by importing the Network class. 
+To run this project,
+1. Clone this repo
+2. Import the network class
+3. Initialize a Network:
+
+Example 1:
+```
+from neuron_net.src.models.Network import Network
+net1_config = {
+    "connections": {
+        0: [1],
+        1: [2],
+        2: [3],
+        3: [],
+    },
+    "input_list": [0],
+    "output_list": [3],
+}
+return Network(
+    net1_config["connections"],
+    net1_config["input_list"],
+    net1_config["output_list"],
+    period_start_time=0,
+    clock_cycle_period=100,
+    name="clocked_network_linear",
+)
+```
+This results in the following structure:
+![network_1](neuron_net/src/doc/diagrams/neuron_linear_init.jpg)
+
+Example 2:
+```
+from neuron_net.src.models.Network import Network
+net2_config = {
+    "connections": {
+        0: [1, 2],
+        1: [3],
+        2: [1],
+        3: [],
+    },
+    "input_list": [0],
+    "output_list": [3],
+}
+
+return Network(
+    net2_config["connections"],
+    net2_config["input_list"],
+    net2_config["output_list"],
+    period_start_time=1234,
+    clock_cycle_period=100,
+    name="clocked_network_loop",
+)
+```
+Network 2: 
+
+![network_2](neuron_net/src/doc/diagrams/neuron_loop_init.jpg)
+
 
 ## Outline
 1. [Purpose](#purpose)
@@ -66,6 +122,9 @@ Synapses only exist in the context of their origin neurons. This reduces memory 
 ### Network
 Neurons maintain their own synapse connections, updates, and update events in their respective data structures. The network serves as the interface between the environment and the internal computations of neuron graphs. In a large network, the roNetworks also are responsible for converting output spikes to interpretable actions for the action space. The choses implementation uses a weighted probabalistic interpretation of the last C simulation cycles 
 The next question to answer is should and how inputs to the network clusters should be encoded. 
+![spike_train](neuron_net/src/doc/diagrams/spike_train_output.jpg)
+
+This allows the network to have asynchronous representations inside the network but still have synchronzied interpretable outputs. 
 
 ## Results
 The foundational modelling tools used to create neuronal networks with phase encoding has been developed. The core functionality including initializing groups of neurons, the learning mechanism (Spike-Timing-Dependent Plasticity) in which neurons fire together, wire together, phase encoding using synchronous network clocks to translate spike timing to vector embeddings, and output retrieval.
