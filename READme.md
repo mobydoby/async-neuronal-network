@@ -1,7 +1,8 @@
 # Async Neural Architecture Design
 
 ## Quickstart
-This project is still in development. Currently this project support initializing networks of neurons and retreiving their outputs through code.  
+This project is still in development. Currently this project support initializing networks of neurons and retreiving their outputs through code. As of March 1, 2025, interfaces with training environments (Gym, Gazebo) is not supported yet. Custom interfaces will need to be developed for various ML tasks (i.e RL, object detection, language generation, etc.)
+
 To run this project,
 1. Clone this repo
 2. Import the network class
@@ -118,13 +119,21 @@ As mentioned in the [background](#background), the closest and most efficient im
 Neurons are the core learning components in the network. They are responsible for maintaining their own incoming spikes and their own synapse weight updates. While incoming spikes are passed from origin to destination. On the event of coincident firing, the neuron that received the coincident spike notifies the sending neuron to update its synaptic weight at the next update event. 
 *** INSERT IMAGE HERE ***
 ### Synapses
-Synapses only exist in the context of their origin neurons. This reduces memory overhead by reducing the redundant information of origin/parent neurons. 
+Synapses only exist in the context of their origin neurons. This reduces memory overhead by reducing the redundant information of origin/parent neurons. If we interpret this network as a graph, synapses are unidirectional edges. 
 ### Network
 Neurons maintain their own synapse connections, updates, and update events in their respective data structures. The network serves as the interface between the environment and the internal computations of neuron graphs. In a large network, the roNetworks also are responsible for converting output spikes to interpretable actions for the action space. The choses implementation uses a weighted probabalistic interpretation of the last C simulation cycles 
 The next question to answer is should and how inputs to the network clusters should be encoded. 
 ![spike_train](neuron_net/src/doc/diagrams/spike_train_output.jpg)
 
-This allows the network to have asynchronous representations inside the network but still have synchronzied interpretable outputs. 
+This allows the network to have asynchronous representations inside the network but still have synchronzied interpretable outputs. Let's consider a hypothetical example to demonstrate this. Imagine a linear network of 5 neurons with 1 neuron reponsible for the input and 1 for the output. 
+
+![parallel](neuron_net/src/doc/diagrams/parallel_processing.jpg)
+
+As shown in the image, a string of neurons can process multiple inputs in parallel. This effect is multiplied with splitting branches and recurrent connections. 
+
+An interesting feature is that the latency or processing speed of the network (i.e time from input to response) depends on the path length measured by the number of neurons in between the input and output. We see a tradeoff here with the amount of information a network can process at once and the path length. Adding recurent connections and branching activation paths becomes more complex but this generally remains true.
+
+This hypothetical scenario highlights the advantage of small world networks as a low average path length is a characteristic of small world networks and why they are so effective. 
 
 ## Results
 The foundational modelling tools used to create neuronal networks with phase encoding has been developed. The core functionality including initializing groups of neurons, the learning mechanism (Spike-Timing-Dependent Plasticity) in which neurons fire together, wire together, phase encoding using synchronous network clocks to translate spike timing to vector embeddings, and output retrieval.
