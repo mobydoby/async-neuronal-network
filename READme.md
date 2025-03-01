@@ -99,11 +99,11 @@ Exploring this paradigm of asynchronous neuron activations also sheds light on t
 The insights from neuroscience and the need for efficient representations serves as the core motivation for this project: implementing a highly efficient learner of representations. 
 
 ## Requirements
-P0. A system that has mechanisms to able to encode information with respect to time.
-P0. A system that has mechanisms to continuosly represent information more efficiently (Learn)
-P0. A system that can initialize asynchronous groups of computational units. 
-P0. Must be able to efficiently initialize large groups of neurons with predefined connections
-P1. Must be a foundational service that creates building blocks for later experiments of asynchronous networks
+1. P0. A system that has mechanisms to able to encode information with respect to time.
+2. P0. A system that has mechanisms to continuosly represent information more efficiently (Learn)
+3. P0. A system that can initialize asynchronous groups of computational units. 
+4. P0. Must be able to efficiently initialize large groups of neurons with predefined connections
+5. P1. Must be a foundational service that creates building blocks for later experiments of asynchronous networks
 
 ## Design
 This Async Netork uses a real time simulator at its core. Since truly asynchronous event-driven neuron behavior is not possible without specialized hardware, a simulation using clock cycles was chosen. 
