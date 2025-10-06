@@ -16,3 +16,9 @@ test = ["pytest",
     "pytest-xdist",
     "pytest-json-report",
 ]
+
+[tool.pytest.ini_options]
+addopts = [
+    "-s",
+    "--log-cli-level=DEBUG"
+]

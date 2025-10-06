@@ -15,11 +15,6 @@ logger.propagate = True
 class Network:
     """Network is the main interface for the user to interact with the network.
     Networks use phase encoding to represent neuron spikes as continuous floating point values.
-    The encoding function uses the curren
-    |     |     |
-    |     |     |
-    |     |     |
-    |     |     |
     """
 
     def __init__(
@@ -85,6 +80,10 @@ class Network:
             f"Network with {len(self.neurons)} neurons."
             f"\n  [{[n for n in self.neurons.values()]}]"
         )
+
+    def log_upcoming_spikes(self):
+        for key, neuron in self.neurons.items():
+            logging.info(f"Neuron[{key}]: {neuron.curr_spikes}")
 
     def clock(self, ref_start_time, clock_cycle_period=100):
         """clock, as in the verb, resets the network to the start time"""

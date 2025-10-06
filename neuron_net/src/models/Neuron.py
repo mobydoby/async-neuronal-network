@@ -202,7 +202,9 @@ class Neuron:
                 # Spike next neurons, nothing happens if is_output neuron
                 for neuron_id, weight in self.synapses.items():
                     # Calculate the time of the spike for all post-synaptic neurons
-                    phase_ratio = spike.time_received - period_start_time / clock_period
+                    phase_ratio = (
+                        spike.time_received - period_start_time
+                    ) / clock_period
                     yield Spike(
                         self,
                         neuron_id,
