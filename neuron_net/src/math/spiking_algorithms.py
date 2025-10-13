@@ -26,15 +26,40 @@ def calc_spike_time(weight, time_delay, scale=100) -> np.uint64:
 def calc_weight_update(curr_weight: np.float64, delta_t: np.uint64) -> np.float64:
     """Update the weight of a synapse based on the time difference
     between pre and post synaptic spikes
+    The closer the pre and post synaptic spikes are, the
+    stronger the change (potentiation/depression).
     Args:
         curr_weight: current weight of the synapse
-        delta_t: time difference between pre and post synaptic spikes
+        delta_t: post-synaptic spike time - pre-synaptic spike time
+    Returns:
+        The updated weight:
+            equals the current weight - f(delta_t)
+            where f(delta_t) is the piecewise function:
+                {
+                    f(delta_t) =
+                        A_plus * exp(-delta_t / tau_plus) if delta_t > 0
+                        A_minus * exp(delta_t / tau_minus) if delta_t <= 0
+                }
+                the greater the abs(delta_t), the greater the change,
+                range: (0, A]
     """
     A_plus = 0.1  # Learning rate for potentiation
     A_minus = 0.12  # Learning rate for depression
     tau_plus = 20  # Time constant for potentiation
     tau_minus = 20  # Time constant for depression
 
+    # delta_t is positive
+    # ex.
+    #
+    #    current activation
+    #     |
+    #     v
+    #  ----------------t
+    #   2 1      <- delta_t > 0 want potentiation
+    #     1 2    <- delta_t < 0 want depression
+    #   ^ ^ ^
+    #   | | /
+    #   term #
     if delta_t < 0:
         # Pre-synaptic spike occurs after post-synaptic spike (depression)
         return curr_weight - A_minus * np.exp(delta_t / tau_minus)

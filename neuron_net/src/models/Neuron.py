@@ -121,10 +121,11 @@ class Neuron:
         heapq.heappush(self.spike_queue, incoming_spike)
 
     def receive_weight_update(self, receiver_id: int, delta_t):
-        """Queue a weight update event rom a post-synaptic neuron
+        """Queue a weight update event from a post-synaptic neuron
         Args:
             receiver_id: id of the post-synaptic neuron
-            delta_t: time difference between pre and post synaptic spikes
+            delta_t: time difference between activation time
+                     and pre/post synaptic spike received
         """
         if receiver_id not in self.synapses.keys():
             raise ValueError(
@@ -136,8 +137,8 @@ class Neuron:
         self, time_cutoff: np.uint64, period_start_time, clock_period=100
     ) -> Iterator[Spike]:
         """Process all the spikes currently in the spike queue.
-        Importantly, spikes do not represent information without the context of spike timing.
-        Uses period_start_time and clock_period to encode the spike into continous values between -0.5 and 0.5.
+        Importantly, spikes do not represent information without the context of
+        spike timing when interpreting output.
         Args:
             time_cutoff: time to process spikes until
             period_start_time: start time of the current period. Used for time based encoding.
@@ -145,7 +146,6 @@ class Neuron:
         Yields:
             Spike: a spike event going to a post-synaptic neuron
         """
-        logger.debug("inside process_spikes")
         heapq.heapify(self.spike_queue)
         # reset spike counter
         logger.debug("Resetting spike counter")
@@ -160,8 +160,12 @@ class Neuron:
                     f"Received spike at {spike.time_received} before period start time {period_start_time}"
                 )
             if spike.time_received - self._time_of_last_activation < self.gamma:
-                logger.debug("in refractory...")
-                # neuron is still in refractory
+                logger.info(
+                    f"Neuron {self.id} is in refractory and received a spike..."
+                )
+                # if neuron is still in refractory, and is not an input neuron,
+                # _time_of_last_activation is the post-synaptic spike time
+                # spike.time_received is the pre-synaptic spike time
                 delta = self._time_of_last_activation - spike.time_received
                 if not self._is_input:
                     spike.origin_neuron.receive_weight_update(self.id, delta)
