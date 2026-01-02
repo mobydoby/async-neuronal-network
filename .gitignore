@@ -173,4 +173,5 @@ cython_debug/
 # drawio diagrams
 *.drawio
 
-.vscode
+.vscode.mcp.json
+.mcp.json
